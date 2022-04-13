@@ -1,0 +1,46 @@
+group 'com.example.mux_data'
+version '1.0'
+
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:7.1.3'
+    }
+}
+
+rootProject.allprojects {
+    repositories {
+        google()
+        mavenCentral()
+        maven {
+            url "https://muxinc.jfrog.io/artifactory/default-maven-release-local"
+        }
+    }
+}
+
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 31
+//    targetSdkVersion 31
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+
+    defaultConfig {
+        minSdkVersion 21
+
+        buildConfigField("String", "MUX_PLUGIN_VERSION", "\"$version\"")
+    }
+
+    dependencies {
+        implementation 'com.mux:stats.muxcore:7.0.11'
+        implementation 'com.squareup.okhttp3:okhttp:4.9.3'
+    }
+}

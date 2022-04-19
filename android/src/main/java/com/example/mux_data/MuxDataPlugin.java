@@ -25,6 +25,7 @@ public class MuxDataPlugin implements FlutterPlugin, MethodCallHandler {
     @Override
     public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
         channel.setMethodCallHandler(null);
+        listener = null;
         channel = null;
         context = null;
     }
@@ -32,14 +33,11 @@ public class MuxDataPlugin implements FlutterPlugin, MethodCallHandler {
     @Override
     public void onMethodCall(@NonNull MethodCall call, @NonNull Result result) {
         if (call.method.equals("init")) {
-            if (listener != null) {
-                result.error("", "MuxStats handler already initialized.", null);
-            } else {
-                listener = new PlayerListener(context, call.argument("environmentKey"), call.argument("viewerId"));
-                result.success(null);
-            }
+            listener = new PlayerListener(context, call.argument("environmentKey"), call.argument("viewerId"));
+            result.success(null);
             return;
-        } else if (listener == null) {
+        }
+        if (listener == null) {
             result.error("", "Uninitialized MuxStats handler.", null);
             return;
         }

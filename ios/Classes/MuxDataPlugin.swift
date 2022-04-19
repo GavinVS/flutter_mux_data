@@ -11,14 +11,10 @@ public class MuxDataPlugin: NSObject, FlutterPlugin {
     }
 
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
-        let args = call.arguments as! [String: Any]
+        let args = call.arguments as? [String: Any]
 
         if (call.method == "init") {
-            guard muxStats == nil else {
-                result(FlutterError(code: "", message: "MuxStats handler already initialized.", details: nil))
-                return
-            }
-            muxStats = MuxStats(environmentKey: args["environmentKey"] as! String, viewerId: args["viewerId"] as! String)
+            muxStats = MuxStats(environmentKey: args!["environmentKey"] as! String, viewerId: args!["viewerId"] as! String)
             result(nil)
             return
         }
